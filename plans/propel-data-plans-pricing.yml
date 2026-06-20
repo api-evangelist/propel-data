@@ -1,0 +1,123 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Propel
+providerId: propel-data
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- Analytics
+- GraphQL
+- Data Warehouse
+- Metrics
+- Customer Facing Analytics
+- Plans
+description: >-
+  Propel offers a Free tier to get started, a paid commercial tier for growing
+  applications, and an Enterprise tier for larger deployments. Pricing is
+  largely sales-led / custom and scales with usage dimensions such as query
+  volume, Data Pool storage, compute (the "Propeller" size assigned to an
+  Application), and number of Applications. Public per-unit prices are not
+  consistently published, so plan entries below are not reconciled.
+notes: >-
+  Plan names and limits vary over time and several are quote-based; verify the
+  current tiers, included quotas, and per-unit overages on the Propel pricing
+  page and with Propel sales during reconciliation.
+sources:
+- https://www.propeldata.com/pricing
+- https://www.propeldata.com/product
+- https://www.propeldata.com/docs
+plans:
+- id: propel-free
+  name: Free
+  type: free
+  description: >-
+    Free tier to connect a Data Source, sync Data Pools, define Metrics, and
+    serve Counter / Time Series / Leaderboard queries while evaluating Propel.
+  entries:
+  - label: Included Usage
+    name: free_usage
+    type: free
+    metric: queries
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0 (capped usage / evaluation limits apply)
+    userMultiplied: false
+  elements:
+  - name: GraphQL Query APIs
+  - name: Data Sources
+  - name: Data Pools
+  - name: Metrics
+- id: propel-startup
+  name: Startup / Growth
+  type: usage
+  description: >-
+    Paid commercial tier for production customer-facing analytics. Scales with
+    query volume, Data Pool storage, and assigned compute (Propeller) size.
+  entries:
+  - label: Query Volume
+    name: query_volume
+    type: usage
+    metric: queries
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: usage-based (contact Propel)
+    userMultiplied: false
+  - label: Data Pool Storage
+    name: storage
+    type: usage
+    metric: gb
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: usage-based (contact Propel)
+    userMultiplied: false
+  - label: Compute (Propeller)
+    name: compute
+    type: usage
+    metric: propeller
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: usage-based by Propeller size (contact Propel)
+    userMultiplied: false
+  elements:
+  - name: GraphQL Query APIs
+  - name: Data Sources
+  - name: Data Pools
+  - name: Metrics
+  - name: Applications
+  - name: Policies
+- id: propel-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Enterprise tier with volume commitments, larger Propellers, advanced
+    multi-tenant Policies, security/compliance reviews, dedicated support, and
+    negotiated terms. Contact Propel sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: Dedicated Compute
+  - name: Advanced Policies and Multi-Tenancy
+  - name: Enterprise Support and Security Review
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

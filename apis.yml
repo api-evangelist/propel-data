@@ -1,0 +1,165 @@
+aid: propel-data
+url: https://raw.githubusercontent.com/api-evangelist/propel-data/refs/heads/main/apis.yml
+name: Propel
+kind: company
+description: Propel is a customer-facing analytics platform that puts a fast GraphQL
+  analytics API in front of a data warehouse. Teams connect a Data Source (Snowflake,
+  BigQuery, S3, Redshift, ClickHouse, Postgres, Kafka, webhooks), sync it into
+  high-speed Data Pools, define Metrics, and serve sub-second Counter, Time Series,
+  and Leaderboard queries to in-product dashboards, with multi-tenant Policies and
+  OAuth2 Applications for access control.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Analytics
+- GraphQL
+- Data Warehouse
+- Metrics
+- Customer Facing Analytics
+created: '2026-06-20'
+modified: '2026-06-20'
+specificationVersion: '0.19'
+apis:
+- aid: propel-data:propel-data-metrics-queries-api
+  name: Propel Metrics Queries API
+  tags:
+  - Metrics
+  - Queries
+  - Analytics
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.propeldata.com/docs/query-apis/metrics
+  baseURL: https://api.us-east-2.propeldata.com/graphql
+  properties:
+  - url: https://www.propeldata.com/docs/query-apis/metrics
+    type: Documentation
+  - url: https://www.propeldata.com/docs/api
+    type: APIReference
+  - url: openapi/propel-data-openapi.yml
+    type: OpenAPI
+  - url: graphql/propel-data-graphql.md
+    type: GraphQL
+  - url: collections/propel-data.postman_collection.json
+    type: PostmanCollection
+  - url: collections/propel-data.opencollection.json
+    type: OpenCollection
+  description: GraphQL query surface for analytics over Data Pools - Counter (single
+    aggregated value), Time Series (values over a time range at a granularity), and
+    Leaderboard (top-N grouped by dimensions) queries, run against a pre-defined
+    Metric by uniqueName or against an inline Metric over a Data Pool.
+- aid: propel-data:propel-data-data-pools-api
+  name: Propel Data Pools API
+  tags:
+  - Data Pools
+  - Storage
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.propeldata.com/docs/api/admin/objects
+  baseURL: https://api.us-east-2.propeldata.com/graphql
+  properties:
+  - url: https://www.propeldata.com/docs/data-pools
+    type: Documentation
+  - url: https://www.propeldata.com/docs/api/admin/objects
+    type: APIReference
+  - url: openapi/propel-data-openapi.yml
+    type: OpenAPI
+  - url: graphql/propel-data-graphql.md
+    type: GraphQL
+  - url: collections/propel-data.postman_collection.json
+    type: PostmanCollection
+  - url: collections/propel-data.opencollection.json
+    type: OpenCollection
+  description: Admin operations for Data Pools - the high-speed storage Propel syncs
+    warehouse data into, with a primary timestamp column for ordering and partitioning.
+    Create, read, list, update, and delete Data Pools and inspect their columns and
+    sync status via GraphQL mutations and queries.
+- aid: propel-data:propel-data-data-sources-api
+  name: Propel Data Sources API
+  tags:
+  - Data Sources
+  - Connectors
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.propeldata.com/docs/api/admin/objects
+  baseURL: https://api.us-east-2.propeldata.com/graphql
+  properties:
+  - url: https://www.propeldata.com/docs/data-sources
+    type: Documentation
+  - url: https://www.propeldata.com/docs/api/admin/objects
+    type: APIReference
+  - url: openapi/propel-data-openapi.yml
+    type: OpenAPI
+  - url: graphql/propel-data-graphql.md
+    type: GraphQL
+  - url: collections/propel-data.postman_collection.json
+    type: PostmanCollection
+  - url: collections/propel-data.opencollection.json
+    type: OpenCollection
+  description: Admin operations for Data Sources - the connections to warehouses and
+    stores Propel reads from (Snowflake, BigQuery, Amazon S3, Redshift, ClickHouse,
+    Postgres, Kafka, and webhooks). Create, introspect tables, test the connection,
+    and manage the lifecycle via GraphQL.
+- aid: propel-data:propel-data-applications-policies-api
+  name: Propel Applications and Policies API
+  tags:
+  - Applications
+  - Policies
+  - Access Control
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.propeldata.com/docs/applications
+  baseURL: https://api.us-east-2.propeldata.com/graphql
+  properties:
+  - url: https://www.propeldata.com/docs/applications
+    type: Documentation
+  - url: https://www.propeldata.com/docs/api/admin/objects
+    type: APIReference
+  - url: openapi/propel-data-openapi.yml
+    type: OpenAPI
+  - url: graphql/propel-data-graphql.md
+    type: GraphQL
+  - url: collections/propel-data.postman_collection.json
+    type: PostmanCollection
+  - url: collections/propel-data.opencollection.json
+    type: OpenCollection
+  description: Admin operations for Applications (the OAuth2 client-credential entities
+    that issue access tokens and carry scopes) and Policies (the multi-tenant access
+    rules that govern which Metric data an Application or end-customer can query),
+    managed via GraphQL mutations and queries.
+- aid: propel-data:propel-data-oauth-api
+  name: Propel OAuth2 Token API
+  tags:
+  - OAuth2
+  - Authentication
+  - Access Tokens
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.propeldata.com/docs/api/authentication
+  baseURL: https://auth.us-east-2.propeldata.com/oauth2/token
+  properties:
+  - url: https://www.propeldata.com/docs/api/authentication
+    type: Documentation
+  - url: openapi/propel-data-openapi.yml
+    type: OpenAPI
+  - url: graphql/propel-data-graphql.md
+    type: GraphQL
+  description: OAuth2 client-credentials token endpoint. Applications exchange a
+    client_id and client_secret for a short-lived Bearer access token (for example
+    with the metric:query scope) that is then sent on the Authorization header to
+    the GraphQL API.
+common:
+- type: GitHubOrganization
+  url: https://github.com/propeldata
+- type: LinkedIn
+  url: https://www.linkedin.com/company/propeldata
+- type: Website
+  url: https://www.propeldata.com
+- type: Documentation
+  url: https://www.propeldata.com/docs
+- type: Plans
+  url: plans/propel-data-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/propel-data-rate-limits.yml
+- type: FinOps
+  url: finops/propel-data-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

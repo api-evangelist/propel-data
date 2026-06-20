@@ -1,0 +1,61 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Propel
+providerId: propel-data
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- Analytics
+- GraphQL
+- Data Warehouse
+- Metrics
+- Customer Facing Analytics
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Propel governs throughput on its GraphQL API through per-Application concurrency
+  and request limits, the compute size (Propeller) assigned to an Application, and
+  plan-level query quotas. Specific numeric limits depend on plan and Propeller and
+  are not consistently published, so they are not reconciled in this artifact.
+notes: >-
+  Confirm per-plan and per-Propeller concurrency, requests-per-second, and query
+  quota limits, along with the throttling response code and any Retry-After
+  behavior, in Propel's documentation and console during reconciliation.
+sources:
+- https://www.propeldata.com/docs/api
+- https://www.propeldata.com/docs/applications
+- https://www.propeldata.com/pricing
+responseCodes:
+  throttled: 429
+limits:
+- name: Concurrent Queries
+  scope: application
+  metric: requests
+  limit: see provider documentation
+  notes: Concurrency scales with the Application's assigned Propeller size.
+- name: Requests Per Second (RPS)
+  scope: application
+  metric: requests
+  limit: see provider documentation
+  notes: Per-Application request rate; varies by plan and Propeller.
+- name: Query Quota
+  scope: account
+  metric: queries
+  limit: see provider documentation
+  notes: Plan-level monthly query volume included in the tier.
+- name: OAuth2 Token Requests
+  scope: application
+  metric: requests
+  limit: see provider documentation
+  notes: Token endpoint issuance; cache and reuse Bearer tokens until expiry.
+policies:
+- name: Tiered Limits
+  description: Throughput rises with paid plans and larger Propeller compute sizes assigned to Applications.
+- name: Backoff Strategy
+  description: Clients should cache access tokens, batch multiple GraphQL queries per request where possible, and implement exponential backoff with jitter on 429 responses.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

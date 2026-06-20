@@ -1,0 +1,189 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Propel API",
+    "version": "1.0",
+    "description": "Propel customer-facing analytics GraphQL API. OAuth2 client-credentials token endpoint plus the single GraphQL endpoint for Metric queries (counter, timeSeries, leaderboard) and Admin operations (Data Sources, Data Pools, Metrics, Applications, Policies)."
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{accessToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "OAuth2",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Access Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://auth.us-east-2.propeldata.com/oauth2/token",
+            "headers": [
+              { "name": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "type": "urlencoded",
+              "data": [
+                { "key": "grant_type", "value": "client_credentials" },
+                { "key": "client_id", "value": "{{clientId}}" },
+                { "key": "client_secret", "value": "{{clientSecret}}" },
+                { "key": "scope", "value": "metric:query" }
+              ]
+            }
+          },
+          "docs": "Exchange Application client credentials for a short-lived Bearer access token."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Metric Queries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Counter",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.us-east-2.propeldata.com/graphql",
+            "headers": [
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{\"query\":\"query Counter($input: CounterInput!) { counter(input: $input) { value } }\",\"variables\":{\"input\":{\"metricName\":\"total_sales\",\"timeRange\":{\"relative\":\"LAST_N_DAYS\",\"n\":30}}}}"
+            }
+          },
+          "docs": "Single aggregated value for a Metric over a time range."
+        },
+        {
+          "info": {
+            "name": "Time Series",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.us-east-2.propeldata.com/graphql",
+            "headers": [
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{\"query\":\"query TimeSeries($input: TimeSeriesInput!) { timeSeries(input: $input) { labels values } }\",\"variables\":{\"input\":{\"metricName\":\"total_sales\",\"granularity\":\"DAY\",\"timeRange\":{\"relative\":\"LAST_N_DAYS\",\"n\":90}}}}"
+            }
+          },
+          "docs": "Values bucketed over a time range at a granularity."
+        },
+        {
+          "info": {
+            "name": "Leaderboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.us-east-2.propeldata.com/graphql",
+            "headers": [
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{\"query\":\"query Leaderboard($input: LeaderboardInput!) { leaderboard(input: $input) { headers rows } }\",\"variables\":{\"input\":{\"metricName\":\"total_sales\",\"dimensions\":[{\"columnName\":\"salesperson\"}],\"sort\":\"DESC\",\"rowLimit\":10,\"timeRange\":{\"relative\":\"LAST_N_DAYS\",\"n\":30}}}}"
+            }
+          },
+          "docs": "Top-N table grouped by dimensions and sorted by the Metric."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Admin",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Data Pools",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.us-east-2.propeldata.com/graphql",
+            "headers": [
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{\"query\":\"query { dataPools(first: 20) { nodes { id uniqueName status } pageInfo { hasNextPage endCursor } } }\"}"
+            }
+          },
+          "docs": "List Data Pools for the account."
+        },
+        {
+          "info": {
+            "name": "Create Sum Metric",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.us-east-2.propeldata.com/graphql",
+            "headers": [
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{\"query\":\"mutation CreateMetric($input: CreateSumMetricInput!) { createSumMetric(input: $input) { metric { id uniqueName type } } }\",\"variables\":{\"input\":{\"uniqueName\":\"total_sales\",\"dataPool\":{\"name\":\"sales_pool\"},\"measure\":{\"columnName\":\"amount\"},\"dimensions\":[{\"columnName\":\"region\"},{\"columnName\":\"salesperson\"}]}}}"
+            }
+          },
+          "docs": "Define a SUM Metric over a Data Pool."
+        },
+        {
+          "info": {
+            "name": "Create Application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.us-east-2.propeldata.com/graphql",
+            "headers": [
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{\"query\":\"mutation CreateApplication($input: CreateApplicationInput!) { createApplication(input: $input) { application { id uniqueName clientId scopes } } }\",\"variables\":{\"input\":{\"uniqueName\":\"dashboard-app\",\"scopes\":[\"METRIC_QUERY\",\"ADMIN\"],\"propeller\":\"P1_X_SMALL\"}}}"
+            }
+          },
+          "docs": "Create an OAuth2 Application (client) with scopes and a Propeller size."
+        },
+        {
+          "info": {
+            "name": "Create Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.us-east-2.propeldata.com/graphql",
+            "headers": [
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{\"query\":\"mutation CreatePolicy($input: CreatePolicyInput!) { createPolicy(input: $input) { policy { id type } } }\",\"variables\":{\"input\":{\"metric\":{\"name\":\"total_sales\"},\"application\":{\"name\":\"dashboard-app\"},\"type\":\"TENANT_ACCESS\"}}}"
+            }
+          },
+          "docs": "Attach a multi-tenant access Policy binding a Metric to an Application."
+        }
+      ]
+    }
+  ]
+}

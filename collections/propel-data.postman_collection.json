@@ -1,0 +1,216 @@
+{
+  "info": {
+    "name": "Propel API",
+    "description": "Propel customer-facing analytics GraphQL API. OAuth2 client-credentials token endpoint plus the single GraphQL endpoint for Metric queries (counter, timeSeries, leaderboard) and Admin operations (Data Sources, Data Pools, Metrics, Applications, Policies).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "authUrl",
+      "value": "https://auth.us-east-2.propeldata.com"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://api.us-east-2.propeldata.com"
+    },
+    {
+      "key": "clientId",
+      "value": ""
+    },
+    {
+      "key": "clientSecret",
+      "value": ""
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "OAuth2",
+      "item": [
+        {
+          "name": "Create Access Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "url": {
+              "raw": "{{authUrl}}/oauth2/token",
+              "host": ["{{authUrl}}"],
+              "path": ["oauth2", "token"]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "client_credentials" },
+                { "key": "client_id", "value": "{{clientId}}" },
+                { "key": "client_secret", "value": "{{clientSecret}}" },
+                { "key": "scope", "value": "metric:query" }
+              ]
+            },
+            "description": "Exchange Application client credentials for a short-lived Bearer access token used on GraphQL requests."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Metric Queries",
+      "item": [
+        {
+          "name": "Counter",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["graphql"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"query Counter($input: CounterInput!) { counter(input: $input) { value } }\",\"variables\":{\"input\":{\"metricName\":\"total_sales\",\"timeRange\":{\"relative\":\"LAST_N_DAYS\",\"n\":30}}}}"
+            },
+            "description": "Single aggregated value for a Metric over a time range."
+          }
+        },
+        {
+          "name": "Time Series",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["graphql"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"query TimeSeries($input: TimeSeriesInput!) { timeSeries(input: $input) { labels values } }\",\"variables\":{\"input\":{\"metricName\":\"total_sales\",\"granularity\":\"DAY\",\"timeRange\":{\"relative\":\"LAST_N_DAYS\",\"n\":90}}}}"
+            },
+            "description": "Values bucketed over a time range at a granularity."
+          }
+        },
+        {
+          "name": "Leaderboard",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["graphql"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"query Leaderboard($input: LeaderboardInput!) { leaderboard(input: $input) { headers rows } }\",\"variables\":{\"input\":{\"metricName\":\"total_sales\",\"dimensions\":[{\"columnName\":\"salesperson\"}],\"sort\":\"DESC\",\"rowLimit\":10,\"timeRange\":{\"relative\":\"LAST_N_DAYS\",\"n\":30}}}}"
+            },
+            "description": "Top-N table grouped by dimensions and sorted by the Metric."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "List Data Pools",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["graphql"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"query { dataPools(first: 20) { nodes { id uniqueName status } pageInfo { hasNextPage endCursor } } }\"}"
+            },
+            "description": "List Data Pools for the account."
+          }
+        },
+        {
+          "name": "Create Sum Metric",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["graphql"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"mutation CreateMetric($input: CreateSumMetricInput!) { createSumMetric(input: $input) { metric { id uniqueName type } } }\",\"variables\":{\"input\":{\"uniqueName\":\"total_sales\",\"dataPool\":{\"name\":\"sales_pool\"},\"measure\":{\"columnName\":\"amount\"},\"dimensions\":[{\"columnName\":\"region\"},{\"columnName\":\"salesperson\"}]}}}"
+            },
+            "description": "Define a SUM Metric over a Data Pool."
+          }
+        },
+        {
+          "name": "Create Application",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["graphql"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"mutation CreateApplication($input: CreateApplicationInput!) { createApplication(input: $input) { application { id uniqueName clientId scopes } } }\",\"variables\":{\"input\":{\"uniqueName\":\"dashboard-app\",\"scopes\":[\"METRIC_QUERY\",\"ADMIN\"],\"propeller\":\"P1_X_SMALL\"}}}"
+            },
+            "description": "Create an OAuth2 Application (client) with scopes and a Propeller size."
+          }
+        },
+        {
+          "name": "Create Policy",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/graphql",
+              "host": ["{{baseUrl}}"],
+              "path": ["graphql"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"mutation CreatePolicy($input: CreatePolicyInput!) { createPolicy(input: $input) { policy { id type } } }\",\"variables\":{\"input\":{\"metric\":{\"name\":\"total_sales\"},\"application\":{\"name\":\"dashboard-app\"},\"type\":\"TENANT_ACCESS\"}}}"
+            },
+            "description": "Attach a multi-tenant access Policy binding a Metric to an Application."
+          }
+        }
+      ]
+    }
+  ]
+}

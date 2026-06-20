@@ -1,0 +1,88 @@
+aid: propel-data
+name: Propel
+review:
+  question: Does Propel expose a documented public WebSocket or streaming API?
+  answer: false
+  date: '2026-06-20'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Propel serves analytics through a
+    synchronous GraphQL-over-HTTP transport (POST /graphql). No GraphQL
+    subscription surface, Server-Sent Events stream, or WebSocket endpoint is
+    documented, so there is no event-driven / streaming surface in scope for
+    AsyncAPI modeling.
+findings:
+  summary: |
+    Propel is a customer-facing analytics platform fronted by a single GraphQL
+    API. All operations - the Query APIs (counter, timeSeries, leaderboard over
+    Data Pools) and the Admin APIs (Data Sources, Data Pools, Metrics,
+    Applications, Policies) - are sent as HTTP POST requests to
+    https://api.us-east-2.propeldata.com/graphql. Authentication is OAuth2
+    client credentials: an Application exchanges client_id/client_secret at
+    https://auth.us-east-2.propeldata.com/oauth2/token for a short-lived Bearer
+    access token (e.g. scope metric:query) carried on the Authorization header.
+    No WebSocket (ws:// or wss://) endpoint and no GraphQL subscription /
+    streaming transport are documented.
+  transports:
+    - protocol: GraphQL-over-HTTP
+      scheme: https
+      baseURL: https://api.us-east-2.propeldata.com/graphql
+      method: POST
+      documented: true
+      note: Single GraphQL endpoint for both Query APIs and Admin APIs; request/response only.
+    - protocol: OAuth2
+      scheme: https
+      baseURL: https://auth.us-east-2.propeldata.com/oauth2/token
+      method: POST
+      documented: true
+      note: Client-credentials grant issuing Bearer access tokens.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented for Propel as of the review date.
+    - protocol: GraphQL Subscriptions
+      scheme: wss
+      documented: false
+      note: No GraphQL subscription / streaming surface is documented; analytics are served via synchronous queries.
+  graphqlOperationsConfirmed:
+    - query counter(input: CounterInput!)
+    - query timeSeries(input: TimeSeriesInput!)
+    - query leaderboard(input: LeaderboardInput!)
+    - query metricByName(uniqueName)
+    - mutation createSnowflakeDataSource / createDataSource family
+    - mutation createDataPoolV2
+    - mutation createSumMetric / create*Metric family
+    - mutation createApplication
+    - mutation createPolicy
+  authConfirmed:
+    - POST https://auth.us-east-2.propeldata.com/oauth2/token (grant_type=client_credentials)
+    - Authorization: Bearer <access_token> on POST /graphql
+sources:
+  - url: https://www.propeldata.com/docs/api
+    type: APIReference
+    note: GraphQL API reference; single /graphql endpoint with Query and Admin operations.
+  - url: https://www.propeldata.com/docs/query-apis/metrics
+    type: Documentation
+    note: Counter, Time Series, and Leaderboard metric queries; inline and metricByName forms.
+  - url: https://www.propeldata.com/docs/api/admin/objects
+    type: APIReference
+    note: Admin objects - Data Sources, Data Pools, Metrics, Applications, Policies.
+  - url: https://github.com/propeldata/propel-oauth-2-examples
+    type: SourceCode
+    note: OAuth2 client-credentials examples across multiple languages for the GraphQL API.
+  - url: https://www.apollographql.com/blog/designing-the-graphql-schema-for-propel-an-analytics-api-platform
+    type: Article
+    note: Propel's own write-up of its GraphQL schema design (Counter / Time Series responses, inputs).
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    The transport is synchronous GraphQL-over-HTTP with no documented
+    subscription, SSE, or WebSocket surface, so no AsyncAPI document was
+    created. The GraphQL transport is documented in apis.yml (GraphQL property +
+    graphql/propel-data-graphql.md) and modeled in OpenAPI as POST /graphql plus
+    the OAuth2 token endpoint.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

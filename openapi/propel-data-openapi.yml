@@ -1,0 +1,198 @@
+openapi: 3.0.1
+info:
+  title: Propel API
+  description: >-
+    HTTP modeling of the Propel customer-facing analytics platform. Propel
+    exposes a single GraphQL endpoint (POST /graphql) for both its Query APIs
+    (Counter, Time Series, Leaderboard analytics over Data Pools) and its Admin
+    APIs (Data Sources, Data Pools, Metrics, Applications, Policies), plus an
+    OAuth2 client-credentials token endpoint that issues the Bearer access
+    tokens used to call the GraphQL API.
+  termsOfService: https://www.propeldata.com/legal/terms
+  contact:
+    name: Propel Support
+    url: https://www.propeldata.com/docs
+  version: '1.0'
+servers:
+  - url: https://api.us-east-2.propeldata.com
+    description: Propel GraphQL API (us-east-2 region)
+  - url: https://auth.us-east-2.propeldata.com
+    description: Propel OAuth2 token service (us-east-2 region)
+paths:
+  /oauth2/token:
+    post:
+      operationId: createAccessToken
+      tags:
+        - OAuth2
+      summary: Exchange client credentials for a Bearer access token.
+      description: >-
+        OAuth2 client-credentials grant. An Application's client_id and
+        client_secret are exchanged for a short-lived Bearer access token that
+        is sent on the Authorization header of GraphQL requests. Served from the
+        auth host (https://auth.us-east-2.propeldata.com).
+      servers:
+        - url: https://auth.us-east-2.propeldata.com
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        '200':
+          description: Access token issued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          description: Invalid client credentials.
+  /graphql:
+    post:
+      operationId: postGraphql
+      tags:
+        - GraphQL
+      summary: Execute a GraphQL query or mutation.
+      description: >-
+        Single GraphQL-over-HTTP endpoint. Send a JSON body containing a
+        `query` string and optional `variables`. Used for Metric queries
+        (counter, timeSeries, leaderboard) and Admin operations (Data Sources,
+        Data Pools, Metrics, Applications, Policies). Requires a Bearer access
+        token from /oauth2/token.
+      servers:
+        - url: https://api.us-east-2.propeldata.com
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GraphQLRequest'
+            examples:
+              counter:
+                summary: Counter metric query
+                value:
+                  query: >-
+                    query Counter($input: CounterInput!) { counter(input: $input) { value } }
+                  variables:
+                    input:
+                      metricName: total_sales
+                      timeRange:
+                        relative: LAST_N_DAYS
+                        n: 30
+              timeSeries:
+                summary: Time Series metric query
+                value:
+                  query: >-
+                    query TimeSeries($input: TimeSeriesInput!) { timeSeries(input: $input) { labels values } }
+                  variables:
+                    input:
+                      metricName: total_sales
+                      granularity: DAY
+                      timeRange:
+                        relative: LAST_N_DAYS
+                        n: 90
+              leaderboard:
+                summary: Leaderboard metric query
+                value:
+                  query: >-
+                    query Leaderboard($input: LeaderboardInput!) { leaderboard(input: $input) { headers rows } }
+                  variables:
+                    input:
+                      metricName: total_sales
+                      dimensions:
+                        - columnName: salesperson
+                      sort: DESC
+                      rowLimit: 10
+                      timeRange:
+                        relative: LAST_N_DAYS
+                        n: 30
+      responses:
+        '200':
+          description: >-
+            GraphQL response. Note that GraphQL returns HTTP 200 even when the
+            `errors` array is populated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphQLResponse'
+        '401':
+          description: Missing or invalid Bearer access token.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        OAuth2 client-credentials access token obtained from
+        POST https://auth.us-east-2.propeldata.com/oauth2/token.
+  schemas:
+    TokenRequest:
+      type: object
+      required:
+        - grant_type
+        - client_id
+        - client_secret
+      properties:
+        grant_type:
+          type: string
+          enum:
+            - client_credentials
+          example: client_credentials
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        scope:
+          type: string
+          example: metric:query
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          example: 3600
+        scope:
+          type: string
+          example: metric:query
+    GraphQLRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          description: The GraphQL query or mutation document.
+        operationName:
+          type: string
+        variables:
+          type: object
+          additionalProperties: true
+    GraphQLResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties: true
+          nullable: true
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+              path:
+                type: array
+                items:
+                  type: string
+              extensions:
+                type: object
+                additionalProperties: true

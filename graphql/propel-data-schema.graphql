@@ -1,0 +1,435 @@
+"""
+Propel GraphQL Schema (representative subset)
+Models the Propel customer-facing analytics API served at
+https://api.us-east-2.propeldata.com/graphql
+Source: https://www.propeldata.com/docs/api
+        https://www.propeldata.com/docs/query-apis/metrics
+        https://www.propeldata.com/docs/api/admin/objects
+
+This SDL is a REPRESENTATIVE model assembled from Propel's published
+documentation. It is not the authoritative live schema; consult schema
+introspection and the Admin objects reference for exact, complete types.
+"""
+
+# ---------------------------------------------------------------------------
+# Scalars
+# ---------------------------------------------------------------------------
+
+scalar DateTime
+scalar JSON
+scalar ID
+
+# ---------------------------------------------------------------------------
+# Enums
+# ---------------------------------------------------------------------------
+
+enum MetricType {
+  COUNT
+  SUM
+  COUNT_DISTINCT
+  AVERAGE
+  MIN
+  MAX
+  CUSTOM
+}
+
+enum TimeSeriesGranularity {
+  MINUTE
+  FIVE_MINUTES
+  TEN_MINUTES
+  FIFTEEN_MINUTES
+  HOUR
+  DAY
+  WEEK
+  MONTH
+  YEAR
+}
+
+enum RelativeTimeRange {
+  TODAY
+  YESTERDAY
+  THIS_WEEK
+  PREVIOUS_WEEK
+  THIS_MONTH
+  PREVIOUS_MONTH
+  THIS_QUARTER
+  PREVIOUS_QUARTER
+  THIS_YEAR
+  PREVIOUS_YEAR
+  LAST_N_MINUTES
+  LAST_N_HOURS
+  LAST_N_DAYS
+  LAST_N_WEEKS
+  LAST_N_MONTHS
+  LAST_N_YEARS
+}
+
+enum FilterOperator {
+  EQUALS
+  NOT_EQUALS
+  GREATER_THAN
+  GREATER_THAN_OR_EQUAL_TO
+  LESS_THAN
+  LESS_THAN_OR_EQUAL_TO
+  IS_NULL
+  IS_NOT_NULL
+  LIKE
+  NOT_LIKE
+}
+
+enum Sort {
+  ASC
+  DESC
+}
+
+enum DataSourceStatus {
+  CREATED
+  CONNECTED
+  BROKEN
+  DELETING
+}
+
+enum DataPoolStatus {
+  CREATED
+  PENDING
+  LIVE
+  SETUP_FAILED
+  CONNECTING
+  BROKEN
+  PAUSING
+  PAUSED
+  DELETING
+}
+
+enum ApplicationScope {
+  ADMIN
+  APPLICATION_ADMIN
+  METRIC_QUERY
+  METRIC_STATS
+  DATA_POOL_QUERY
+  DATA_POOL_STATS
+}
+
+enum Propeller {
+  P1_X_SMALL
+  P1_SMALL
+  P1_MEDIUM
+  P1_LARGE
+  P1_X_LARGE
+}
+
+enum PolicyType {
+  ALL_ACCESS
+  TENANT_ACCESS
+  RESTRICTED
+}
+
+# ---------------------------------------------------------------------------
+# Common input objects
+# ---------------------------------------------------------------------------
+
+input TimeRangeInput {
+  relative: RelativeTimeRange
+  n: Int
+  start: DateTime
+  stop: DateTime
+  timeZone: String
+}
+
+input FilterInput {
+  column: String!
+  operator: FilterOperator!
+  value: String
+  and: [FilterInput!]
+  or: [FilterInput!]
+}
+
+input DimensionInput {
+  columnName: String!
+}
+
+"A reference to an existing object by id or uniqueName."
+input IdOrUniqueName {
+  id: ID
+  name: String
+}
+
+# An inline measure used when defining a Metric inside a query.
+input MeasureInput {
+  count: CountMeasureInput
+  sum: ColumnMeasureInput
+  countDistinct: ColumnMeasureInput
+  average: ColumnMeasureInput
+  min: ColumnMeasureInput
+  max: ColumnMeasureInput
+}
+
+input CountMeasureInput {
+  filters: [FilterInput!]
+}
+
+input ColumnMeasureInput {
+  column: String!
+  filters: [FilterInput!]
+}
+
+# Inline Metric definition (alternative to referencing a Metric by name).
+input MetricDefinitionInput {
+  dataPool: IdOrUniqueName!
+  measure: MeasureInput!
+  filters: [FilterInput!]
+  dimensions: [DimensionInput!]
+}
+
+# ---------------------------------------------------------------------------
+# Metric query inputs
+# ---------------------------------------------------------------------------
+
+input CounterInput {
+  metricName: String
+  metric: MetricDefinitionInput
+  timeRange: TimeRangeInput
+  filters: [FilterInput!]
+}
+
+input TimeSeriesInput {
+  metricName: String
+  metric: MetricDefinitionInput
+  timeRange: TimeRangeInput
+  granularity: TimeSeriesGranularity!
+  filters: [FilterInput!]
+}
+
+input LeaderboardInput {
+  metricName: String
+  metric: MetricDefinitionInput
+  timeRange: TimeRangeInput
+  dimensions: [DimensionInput!]!
+  sort: Sort
+  rowLimit: Int!
+  filters: [FilterInput!]
+}
+
+# ---------------------------------------------------------------------------
+# Metric query responses
+# ---------------------------------------------------------------------------
+
+type CounterResponse {
+  value: String
+}
+
+type TimeSeriesResponse {
+  labels: [String!]!
+  values: [Float]!
+}
+
+type LeaderboardResponse {
+  headers: [String!]!
+  rows: [[String]!]!
+}
+
+# ---------------------------------------------------------------------------
+# Object types
+# ---------------------------------------------------------------------------
+
+type DataSource {
+  id: ID!
+  uniqueName: String!
+  description: String
+  type: String!
+  status: DataSourceStatus!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  dataPools(first: Int, after: String): DataPoolConnection
+}
+
+type Column {
+  columnName: String!
+  type: String!
+  isNullable: Boolean
+}
+
+type DataPool {
+  id: ID!
+  uniqueName: String!
+  description: String
+  status: DataPoolStatus!
+  dataSource: DataSource!
+  table: String
+  timestamp: Column
+  columns(first: Int): [Column!]
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+}
+
+type Metric {
+  id: ID!
+  uniqueName: String!
+  description: String
+  type: MetricType!
+  dataPool: DataPool!
+  dimensions: [Column!]
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+}
+
+type Application {
+  id: ID!
+  uniqueName: String!
+  description: String
+  scopes: [ApplicationScope!]!
+  propeller: Propeller
+  clientId: String!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+}
+
+type Policy {
+  id: ID!
+  type: PolicyType!
+  metric: Metric!
+  application: Application!
+  createdAt: DateTime!
+}
+
+# Relay-style connection (Propel paginates Admin lists this way).
+type DataPoolConnection {
+  nodes: [DataPool!]!
+  pageInfo: PageInfo!
+}
+
+type DataSourceConnection {
+  nodes: [DataSource!]!
+  pageInfo: PageInfo!
+}
+
+type MetricConnection {
+  nodes: [Metric!]!
+  pageInfo: PageInfo!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+# ---------------------------------------------------------------------------
+# Admin mutation inputs / payloads (representative)
+# ---------------------------------------------------------------------------
+
+input SnowflakeConnectionSettingsInput {
+  account: String!
+  database: String!
+  warehouse: String!
+  schema: String!
+  role: String!
+  username: String!
+  password: String!
+}
+
+input CreateSnowflakeDataSourceInput {
+  uniqueName: String
+  description: String
+  connectionSettings: SnowflakeConnectionSettingsInput!
+}
+
+type DataSourcePayload {
+  dataSource: DataSource
+}
+
+input CreateDataPoolInput {
+  dataSource: IdOrUniqueName!
+  table: String!
+  timestamp: DimensionInput!
+  uniqueName: String
+  description: String
+}
+
+type DataPoolPayload {
+  dataPool: DataPool
+}
+
+input CreateSumMetricInput {
+  uniqueName: String
+  description: String
+  dataPool: IdOrUniqueName!
+  measure: DimensionInput!
+  dimensions: [DimensionInput!]
+  filters: [FilterInput!]
+}
+
+type MetricPayload {
+  metric: Metric
+}
+
+input CreateApplicationInput {
+  uniqueName: String
+  description: String
+  scopes: [ApplicationScope!]!
+  propeller: Propeller
+}
+
+type ApplicationPayload {
+  application: Application
+}
+
+input CreatePolicyInput {
+  metric: IdOrUniqueName!
+  application: IdOrUniqueName!
+  type: PolicyType!
+}
+
+type PolicyPayload {
+  policy: Policy
+}
+
+# ---------------------------------------------------------------------------
+# Root types
+# ---------------------------------------------------------------------------
+
+type Query {
+  # Metric query APIs
+  counter(input: CounterInput!): CounterResponse
+  timeSeries(input: TimeSeriesInput!): TimeSeriesResponse
+  leaderboard(input: LeaderboardInput!): LeaderboardResponse
+
+  # Admin lookups
+  dataSource(id: ID!): DataSource
+  dataSourceByName(uniqueName: String!): DataSource
+  dataSources(first: Int, after: String): DataSourceConnection
+
+  dataPool(id: ID!): DataPool
+  dataPoolByName(uniqueName: String!): DataPool
+  dataPools(first: Int, after: String): DataPoolConnection
+
+  metric(id: ID!): Metric
+  metricByName(uniqueName: String!): Metric
+  metrics(first: Int, after: String): MetricConnection
+
+  application(id: ID!): Application
+  policy(id: ID!): Policy
+}
+
+type Mutation {
+  createSnowflakeDataSource(input: CreateSnowflakeDataSourceInput!): DataSourcePayload
+  deleteDataSource(id: ID!): ID
+
+  createDataPoolV2(input: CreateDataPoolInput!): DataPoolPayload
+  deleteDataPool(id: ID!): ID
+
+  createSumMetric(input: CreateSumMetricInput!): MetricPayload
+  deleteMetric(id: ID!): ID
+
+  createApplication(input: CreateApplicationInput!): ApplicationPayload
+  deleteApplication(id: ID!): ID
+
+  createPolicy(input: CreatePolicyInput!): PolicyPayload
+  deletePolicy(id: ID!): ID
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
