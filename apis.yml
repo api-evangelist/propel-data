@@ -146,6 +146,10 @@ apis:
     with the metric:query scope) that is then sent on the Authorization header to
     the GraphQL API.
 common:
+- type: DomainSecurity
+  url: security/propel-data-domain-security.yml
+- type: Authentication
+  url: authentication/propel-data-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/propeldata
 - type: LinkedIn

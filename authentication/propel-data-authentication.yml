@@ -1,0 +1,14 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/propel-data-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: OAuth2 client-credentials access token obtained from POST https://auth.us-east-2.propeldata.com/oauth2/token.
+  sources:
+  - openapi/propel-data-openapi.yml
