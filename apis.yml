@@ -146,6 +146,8 @@ apis:
     with the metric:query scope) that is then sent on the Authorization header to
     the GraphQL API.
 common:
+- type: AgenticAccess
+  url: agentic-access/propel-data-agentic-access.yml
 - type: DomainSecurity
   url: security/propel-data-domain-security.yml
 - type: Authentication
