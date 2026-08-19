@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Propel GraphQL OAuth2 API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "OAuth2",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Exchange client credentials for a Bearer access token.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.us-east-2.propeldata.com/oauth2/token",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "OAuth2 client-credentials grant. An Application's client_id and client_secret are exchanged for a short-lived Bearer access token that is sent on the Authorization header of GraphQL requests. Served from the auth host (https://auth.us-east-2.propeldata.com)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

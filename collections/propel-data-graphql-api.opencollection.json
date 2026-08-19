@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Propel GraphQL API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "GraphQL",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Execute a GraphQL query or mutation.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.us-east-2.propeldata.com/graphql",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Single GraphQL-over-HTTP endpoint. Send a JSON body containing a `query` string and optional `variables`. Used for Metric queries (counter, timeSeries, leaderboard) and Admin operations (Data Sources, Data Pools, Metrics, Applications, Policies). Requires a Bearer access token from /oauth2/token."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

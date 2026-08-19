@@ -1,0 +1,198 @@
+{
+  "item": [
+    {
+      "id": "a9a566d7-cbcf-4639-baba-fc86ce9c7d4a",
+      "name": "GraphQL",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5838da52-85aa-4a5e-94ed-b2ed073bd32e",
+          "name": "Execute a GraphQL query or mutation.",
+          "request": {
+            "name": "Execute a GraphQL query or mutation.",
+            "description": {
+              "content": "Single GraphQL-over-HTTP endpoint. Send a JSON body containing a `query` string and optional `variables`. Used for Metric queries (counter, timeSeries, leaderboard) and Admin operations (Data Sources, Data Pools, Metrics, Applications, Policies). Requires a Bearer access token from /oauth2/token.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "graphql"
+              ],
+              "host": [
+                "api",
+                "us-east-2",
+                "propeldata",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"<string>\",\n  \"operationName\": \"<string>\",\n  \"variables\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "540ef556-2cf9-47dc-a906-6b9212afbabd",
+              "name": "GraphQL response. Note that GraphQL returns HTTP 200 even when the `errors` array is populated.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "graphql"
+                  ],
+                  "host": [
+                    "api",
+                    "us-east-2",
+                    "propeldata",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"query Counter($input: CounterInput!) { counter(input: $input) { value } }\",\n  \"variables\": {\n    \"input\": {\n      \"metricName\": \"total_sales\",\n      \"timeRange\": {\n        \"relative\": \"LAST_N_DAYS\",\n        \"n\": 30\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"key_0\": 7547.343740613859,\n    \"key_1\": 4601.932298360537\n  },\n  \"errors\": [\n    {\n      \"message\": \"string\",\n      \"path\": [\n        \"string\",\n        \"string\"\n      ],\n      \"extensions\": {\n        \"key_0\": 624,\n        \"key_1\": \"string\"\n      }\n    },\n    {\n      \"message\": \"string\",\n      \"path\": [\n        \"string\",\n        \"string\"\n      ],\n      \"extensions\": {\n        \"key_0\": 4063\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "975b0c51-7ac3-4153-97f5-1b425cda3bd0",
+              "name": "Missing or invalid Bearer access token.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "graphql"
+                  ],
+                  "host": [
+                    "api",
+                    "us-east-2",
+                    "propeldata",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"query Counter($input: CounterInput!) { counter(input: $input) { value } }\",\n  \"variables\": {\n    \"input\": {\n      \"metricName\": \"total_sales\",\n      \"timeRange\": {\n        \"relative\": \"LAST_N_DAYS\",\n        \"n\": 30\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.us-east-2.propeldata.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6db03133-fcca-474b-b2c4-05220a6f2645",
+    "name": "Propel GraphQL API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "HTTP modeling of the Propel customer-facing analytics platform. Propel exposes a single GraphQL endpoint (POST /graphql) for both its Query APIs (Counter, Time Series, Leaderboard analytics over Data Pools) and its Admin APIs (Data Sources, Data Pools, Metrics, Applications, Policies), plus an OAuth2 client-credentials token endpoint that issues the Bearer access tokens used to call the GraphQL API.\n\nContact Support:\n Name: Propel Support",
+      "type": "text/plain"
+    }
+  }
+}
