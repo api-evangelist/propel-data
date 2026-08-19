@@ -30,7 +30,7 @@ tags:
 - Customer Facing Analytics
 created: '2026-06-20'
 modified: '2026-06-20'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: propel-data:propel-data-graphql-api
   name: Propel GraphQL API
