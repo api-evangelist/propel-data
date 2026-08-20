@@ -68,6 +68,8 @@ apis:
   humanURL: https://www.propeldata.com/docs/query-apis/metrics
   baseURL: https://api.us-east-2.propeldata.com/graphql
   tags:
+  - Authentication
+  tags_raw:
   - OAuth2
   properties:
   - type: OpenAPI
