@@ -8,6 +8,18 @@ description: Propel is a customer-facing analytics platform that puts a fast Gra
   high-speed Data Pools, define Metrics, and serve sub-second Counter, Time Series,
   and Leaderboard queries to in-product dashboards, with multi-tenant Policies and
   OAuth2 Applications for access control.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
