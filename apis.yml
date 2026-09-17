@@ -44,16 +44,16 @@ created: '2026-06-20'
 modified: '2026-06-20'
 specificationVersion: '0.23'
 apis:
-- aid: propel-data:propel-data-graphql-api
-  name: Propel GraphQL API
-  description: The GraphQL API from Propel — 1 operation(s) for graphql.
+- aid: propel-data:propel-data-oauth2-api
+  name: Propel O Auth2 API
+  description: The OAuth2 API from Propel — 1 operation(s) for oauth2.
   humanURL: https://www.propeldata.com/docs/query-apis/metrics
   baseURL: https://api.us-east-2.propeldata.com/graphql
   tags:
-  - GraphQL
+  - OAuth2
   properties:
   - type: OpenAPI
-    url: openapi/propel-data-graphql-api-openapi.yml
+    url: openapi/propel-data-oauth2-api-openapi.yml
   - type: Documentation
     url: https://www.propeldata.com/docs/query-apis/metrics
   - type: APIReference
@@ -74,18 +74,16 @@ apis:
     url: https://www.propeldata.com/docs/applications
   - type: Documentation
     url: https://www.propeldata.com/docs/api/authentication
-- aid: propel-data:propel-data-oauth2-api
-  name: Propel OAuth2 API
-  description: The OAuth2 API from Propel — 1 operation(s) for oauth2.
+- aid: propel-data:propel-data-graph-ql-api
+  name: Propel Graph QL API
+  description: The Graph QL API from Propel — 1 operation(s) for graph ql.
   humanURL: https://www.propeldata.com/docs/query-apis/metrics
   baseURL: https://api.us-east-2.propeldata.com/graphql
   tags:
-  - Authentication
-  tags_raw:
-  - OAuth2
+  - Graph QL
   properties:
   - type: OpenAPI
-    url: openapi/propel-data-oauth2-api-openapi.yml
+    url: openapi/propel-data-graph-ql-api-openapi.yml
   - type: Documentation
     url: https://www.propeldata.com/docs/query-apis/metrics
   - type: APIReference
