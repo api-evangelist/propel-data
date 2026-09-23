@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Propel GraphQL OAuth2 API
+  title: Propel O Auth2 API
   description: HTTP modeling of the Propel customer-facing analytics platform. Propel exposes a single GraphQL endpoint (POST /graphql) for both its Query APIs (Counter, Time Series, Leaderboard analytics over Data Pools) and its Admin APIs (Data Sources, Data Pools, Metrics, Applications, Policies), plus an OAuth2 client-credentials token endpoint that issues the Bearer access tokens used to call the GraphQL API.
   termsOfService: https://www.propeldata.com/legal/terms
   contact:
@@ -20,7 +20,7 @@ paths:
       operationId: createAccessToken
       tags:
       - OAuth2
-      summary: Exchange client credentials for a Bearer access token.
+      summary: Exchange client credentials for a Bearer access token
       description: OAuth2 client-credentials grant. An Application's client_id and client_secret are exchanged for a short-lived Bearer access token that is sent on the Authorization header of GraphQL requests. Served from the auth host (https://auth.us-east-2.propeldata.com).
       servers:
       - url: https://auth.us-east-2.propeldata.com

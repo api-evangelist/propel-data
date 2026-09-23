@@ -1,16 +1,27 @@
 {
   "provider": "propel-data",
   "sources": [
-    "propel-data-graphql-api-openapi.yml",
-    "propel-data-oauth2-api-openapi.yml"
+    "_original/propel-data-openapi.yml"
   ],
   "outputs": [
     "propel-data-graphql-api-openapi.yml",
     "propel-data-oauth2-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 2 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "propel-data-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "propel-data-openapi.yml: declared missing tag: GraphQL",
+    "propel-data-openapi.yml: declared missing tag: OAuth2",
+    "superseded outputs removed: propel-data-graph-ql-api-openapi.yml, propel-data-o-auth2-api-openapi.yml",
+    "apis.yml register: written (+2 apis, 2 total)"
+  ],
+  "skipped": [
+    "propel-data-graph-ql-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "propel-data-o-auth2-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
