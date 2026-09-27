@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Propel Graph QL API
+  title: Propel GraphQL API
   description: HTTP modeling of the Propel customer-facing analytics platform. Propel exposes a single GraphQL endpoint (POST /graphql) for both its Query APIs (Counter, Time Series, Leaderboard analytics over Data Pools) and its Admin APIs (Data Sources, Data Pools, Metrics, Applications, Policies), plus an OAuth2 client-credentials token endpoint that issues the Bearer access tokens used to call the GraphQL API.
   termsOfService: https://www.propeldata.com/legal/terms
   contact:
@@ -79,6 +79,19 @@ paths:
           description: Missing or invalid Bearer access token.
 components:
   schemas:
+    GraphQLRequest:
+      type: object
+      required:
+      - query
+      properties:
+        query:
+          type: string
+          description: The GraphQL query or mutation document.
+        operationName:
+          type: string
+        variables:
+          type: object
+          additionalProperties: true
     GraphQLResponse:
       type: object
       properties:
@@ -101,19 +114,6 @@ components:
               extensions:
                 type: object
                 additionalProperties: true
-    GraphQLRequest:
-      type: object
-      required:
-      - query
-      properties:
-        query:
-          type: string
-          description: The GraphQL query or mutation document.
-        operationName:
-          type: string
-        variables:
-          type: object
-          additionalProperties: true
   securitySchemes:
     bearerAuth:
       type: http

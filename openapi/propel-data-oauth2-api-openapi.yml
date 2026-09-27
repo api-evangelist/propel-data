@@ -41,6 +41,20 @@ paths:
           description: Invalid client credentials.
 components:
   schemas:
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          example: 3600
+        scope:
+          type: string
+          example: metric:query
     TokenRequest:
       type: object
       required:
@@ -57,20 +71,6 @@ components:
           type: string
         client_secret:
           type: string
-        scope:
-          type: string
-          example: metric:query
-    TokenResponse:
-      type: object
-      properties:
-        access_token:
-          type: string
-        token_type:
-          type: string
-          example: Bearer
-        expires_in:
-          type: integer
-          example: 3600
         scope:
           type: string
           example: metric:query

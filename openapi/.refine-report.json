@@ -8,7 +8,7 @@
     "propel-data-oauth2-api-openapi.yml"
   ],
   "archived": [
-    "deleted 2 superseded output(s) from the previous generation"
+    "deleted 1 superseded output(s) from the previous generation"
   ],
   "errors": [],
   "warnings": [],
@@ -17,11 +17,11 @@
     "propel-data-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
     "propel-data-openapi.yml: declared missing tag: GraphQL",
     "propel-data-openapi.yml: declared missing tag: OAuth2",
-    "superseded outputs removed: propel-data-graph-ql-api-openapi.yml, propel-data-o-auth2-api-openapi.yml",
-    "apis.yml register: written (+2 apis, 2 total)"
+    "superseded outputs removed: propel-data-graph-ql-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 2 total)"
   ],
   "skipped": [
     "propel-data-graph-ql-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "propel-data-o-auth2-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "propel-data-oauth2-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }
