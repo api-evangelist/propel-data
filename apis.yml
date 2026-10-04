@@ -82,8 +82,6 @@ apis:
   humanURL: https://www.propeldata.com/docs/query-apis/metrics
   baseURL: https://api.us-east-2.propeldata.com/graphql
   tags:
-  - GraphQL
-  tags_raw:
   - Graph QL
   properties:
   - type: OpenAPI
