@@ -1,0 +1,26 @@
+slug: propel-data
+provider: Propel
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Graph QL
+  spec_file: propel-data-graph-ql-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.7
+  evidence: Propel exposes a single GraphQL endpoint (POST /graphql) for both its Query APIs (Counter,
+    Time Series, Leaderboard analytics over Data Pools)
+  reason: The single operation is a generic GraphQL passthrough, but the documented surface is explicitly
+    analytics querying over data pools plus analytics admin objects (Data Sources, Metrics), which realises
+    Analytics & BI delivery. Confidence moderated because the tag itself is a protocol endpoint.
