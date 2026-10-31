@@ -1,4 +1,4 @@
-# Propel (propel-data)
+# Propel
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,143 +66,123 @@
 
 Propel is a customer-facing analytics platform that puts a fast GraphQL analytics API in front of a data warehouse. Teams connect a Data Source (Snowflake, BigQuery, S3, Redshift, ClickHouse, Postgres, Kafka, webhooks), sync it into high-speed Data Pools, define Metrics, and serve sub-second Counter, Time Series, and Leaderboard queries to in-product dashboards, with multi-tenant Policies and OAuth2 Applications for access control.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/propel-data/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/propel-data/refs/heads/main/apis.yml)
+**Areas:** Analytics · GraphQL · Data Warehouse · Metrics · Customer Facing Analytics
 
-## Tags
+## Propel on APIs.io
 
-- Analytics
-- GraphQL
-- Data Warehouse
-- Metrics
-- Customer Facing Analytics
+Everything profiled for Propel is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/propel-data/](https://apis.io/providers/propel-data/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (2)
 
-- **Created:** 2026-06-20
-- **Modified:** 2026-06-20
+- [Propel O Auth2 API](https://apis.io/apis/propel-data/propel-data-oauth2-api/) — The OAuth2 API from Propel — 1 operation(s) for oauth2.
+- [Propel Graph QL API](https://apis.io/apis/propel-data/propel-data-graph-ql-api/) — The Graph QL API from Propel — 1 operation(s) for graph ql.
 
-## APIs
+### Published properties
 
-### Propel Metrics Queries API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-GraphQL query surface for analytics over Data Pools - Counter (single aggregated value), Time Series (values over a time range at a granularity), and Leaderboard (top-N grouped by dimensions) queries, run against a pre-defined Metric by uniqueName or against an inline Metric over a Data Pool.
+#### GraphQL (1)
 
-- **Human URL:** [https://www.propeldata.com/docs/query-apis/metrics](https://www.propeldata.com/docs/query-apis/metrics)
-- **Base URL:** `https://api.us-east-2.propeldata.com/graphql`
+GraphQL schemas.
 
-#### Tags
+- [Propel GraphQL API](https://apis.io/graphqls/propel-data/propel-data-graphql/)
 
-- Metrics
-- Queries
-- Analytics
-- GraphQL
+#### Agentic access (1)
 
-#### Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [Documentation](https://www.propeldata.com/docs/query-apis/metrics)
-- [API Reference](https://www.propeldata.com/docs/api)
-- [OpenAPI](openapi/propel-data-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [GraphQL](graphql/propel-data-graphql.md) — [GraphQL Specification](https://spec.graphql.org/)
-- [Postman Collection](collections/propel-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/propel-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Propel Data Agentic Access](https://apis.io/agentic-access/propel-data/propel-data-agentic-access/)
 
-### Propel Data Pools API
+#### Collections (3)
 
-Admin operations for Data Pools - the high-speed storage Propel syncs warehouse data into, with a primary timestamp column for ordering and partitioning. Create, read, list, update, and delete Data Pools and inspect their columns and sync status via GraphQL mutations and queries.
+Postman and Open Collection request collections.
 
-- **Human URL:** [https://www.propeldata.com/docs/api/admin/objects](https://www.propeldata.com/docs/api/admin/objects)
-- **Base URL:** `https://api.us-east-2.propeldata.com/graphql`
+- [Propel API](https://apis.io/collections/propel-data/open-propel-data/)
+- [Propel GraphQL API](https://apis.io/collections/propel-data/open-propel-data-graphql-api/)
+- [Propel GraphQL OAuth2 API](https://apis.io/collections/propel-data/open-propel-data-oauth2-api/)
 
-#### Tags
+#### Security (2)
 
-- Data Pools
-- Storage
-- GraphQL
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Properties
+- [Propel Data Authentication](https://apis.io/security/propel-data/propel-data-authentication/)
+- [Propel Data Domain Security](https://apis.io/security/propel-data/propel-data-domain-security/)
 
-- [Documentation](https://www.propeldata.com/docs/data-pools)
-- [API Reference](https://www.propeldata.com/docs/api/admin/objects)
-- [OpenAPI](openapi/propel-data-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [GraphQL](graphql/propel-data-graphql.md) — [GraphQL Specification](https://spec.graphql.org/)
-- [Postman Collection](collections/propel-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/propel-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Plans and pricing (1)
 
-### Propel Data Sources API
+Published plans, tiers and prices.
 
-Admin operations for Data Sources - the connections to warehouses and stores Propel reads from (Snowflake, BigQuery, Amazon S3, Redshift, ClickHouse, Postgres, Kafka, and webhooks). Create, introspect tables, test the connection, and manage the lifecycle via GraphQL.
+- [Propel Data Plans Pricing](https://apis.io/plans/propel-data/propel-data-plans-pricing/)
 
-- **Human URL:** [https://www.propeldata.com/docs/api/admin/objects](https://www.propeldata.com/docs/api/admin/objects)
-- **Base URL:** `https://api.us-east-2.propeldata.com/graphql`
+#### Rate limits (1)
 
-#### Tags
+Published request limits.
 
-- Data Sources
-- Connectors
-- GraphQL
+- [Propel Data Rate Limits](https://apis.io/rate-limits/propel-data/propel-data-rate-limits/)
 
-#### Properties
+#### FinOps (1)
 
-- [Documentation](https://www.propeldata.com/docs/data-sources)
-- [API Reference](https://www.propeldata.com/docs/api/admin/objects)
-- [OpenAPI](openapi/propel-data-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [GraphQL](graphql/propel-data-graphql.md) — [GraphQL Specification](https://spec.graphql.org/)
-- [Postman Collection](collections/propel-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/propel-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+What the API costs to run, by operation.
 
-### Propel Applications and Policies API
+- [Propel Data Finops](https://apis.io/finops/propel-data/propel-data-finops/)
 
-Admin operations for Applications (the OAuth2 client-credential entities that issue access tokens and carry scopes) and Policies (the multi-tenant access rules that govern which Metric data an Application or end-customer can query), managed via GraphQL mutations and queries.
+## Where to find this API
 
-- **Human URL:** [https://www.propeldata.com/docs/applications](https://www.propeldata.com/docs/applications)
-- **Base URL:** `https://api.us-east-2.propeldata.com/graphql`
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-#### Tags
-
-- Applications
-- Policies
-- Access Control
-- GraphQL
-
-#### Properties
-
-- [Documentation](https://www.propeldata.com/docs/applications)
-- [API Reference](https://www.propeldata.com/docs/api/admin/objects)
-- [OpenAPI](openapi/propel-data-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [GraphQL](graphql/propel-data-graphql.md) — [GraphQL Specification](https://spec.graphql.org/)
-- [Postman Collection](collections/propel-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/propel-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Propel OAuth2 Token API
-
-OAuth2 client-credentials token endpoint. Applications exchange a client_id and client_secret for a short-lived Bearer access token (for example with the metric:query scope) that is then sent on the Authorization header to the GraphQL API.
-
-- **Human URL:** [https://www.propeldata.com/docs/api/authentication](https://www.propeldata.com/docs/api/authentication)
-- **Base URL:** `https://auth.us-east-2.propeldata.com/oauth2/token`
-
-#### Tags
-
-- OAuth2
-- Authentication
-- Access Tokens
-
-#### Properties
-
-- [Documentation](https://www.propeldata.com/docs/api/authentication)
-- [OpenAPI](openapi/propel-data-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [GraphQL](graphql/propel-data-graphql.md) — [GraphQL Specification](https://spec.graphql.org/)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/propeldata)
-- [LinkedIn](https://www.linkedin.com/company/propeldata)
 - [Website](https://www.propeldata.com)
 - [Documentation](https://www.propeldata.com/docs)
-- [Plans](plans/propel-data-plans-pricing.yml)
-- [Rate Limits](rate-limits/propel-data-rate-limits.yml)
-- [Fin Ops](finops/propel-data-finops.yml)
+- [GitHub](https://github.com/propeldata)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 23.7** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 51.1 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 13.1 |
+| Access clarity | 7.9 |
+
+**Agent readiness 22.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 11.8** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/propel-data/](https://apis.io/providers/propel-data/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Propel: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/propel-data/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
